@@ -1,50 +1,52 @@
-export const testDataFactory = {
-  validUser: {
-    username: 'demo-user',
-    password: 'demo-password',
-  },
-  invalidUser: {
-    username: 'invalid-user',
-    password: 'wrong-password',
-  },
-  transfer: {
-    payeeName: 'Test Payee',
-    amount: '250.00',
-    description: 'Monthly rent',
-  },
-};
+export class DataFactory {
+  static getUser() {
+    const seed = `${Date.now()}_${Math.floor(Math.random() * 1000)}`;
+    return {
+      name: `Test User ${seed}`,
+      email: `user_${seed}@example.com`,
+      accountType: 'premium'
+    };
+  }
 
-// export interface UserPayload {
-//   name: string;
-//   email: string;
-//   accountType: 'standard' | 'premium';
-// }
+  static getInvalidUser() {
+    return {
+      name: 'Invalid User',
+      email: 'invalid-email',
+      accountType: 'basic'
+    };
+  }
 
-// export interface TransactionPayload {
-//   userId: string;
-//   amount: number;
-//   type: 'transfer' | 'payment';
-//   recipientId: string;
-// }
+  static getPayeeData() {
+    const seed = Math.floor(Math.random() * 10000);
+    return {
+      name: `Payee_${seed}`,
+      accountNumber: `ACC${Date.now().toString().slice(-8)}`,
+      type: 'Checking' as const
+    };
+  }
 
-// export class DataFactory {
-//   static createUser(overrides?: Partial<UserPayload>): UserPayload {
-//     const uniqueId = `${Date.now()}_${Math.floor(Math.random() * 1000)}`;
-//     return {
-//       name: `Automated User ${uniqueId}`,
-//       email: `testuser_${uniqueId}@fintechtest.com`,
-//       accountType: 'premium',
-//       ...overrides
-//     };
-//   }
+  static getTransferData(recipient: string) {
+    return {
+      recipient,
+      amount: '250.00',
+      description: `Test Ref: ${Date.now()}`
+    };
+  }
 
-//   static createTransaction(userId: string, recipientId = 'rec_auto_001', overrides?: Partial<TransactionPayload>): TransactionPayload {
-//     return {
-//       userId,
-//       amount: 100.50,
-//       type: 'transfer',
-//       recipientId,
-//       ...overrides
-//     };
-//   }
-// }
+  static getTransaction(userId: string) {
+    return {
+      userId,
+      amount: 100.5,
+      type: 'transfer',
+      recipientId: 'recipient-002'
+    };
+  }
+
+  static getApiUser() {
+    return this.getUser();
+  }
+
+  static getApiTransaction(userId: string) {
+    return this.getTransaction(userId);
+  }
+}

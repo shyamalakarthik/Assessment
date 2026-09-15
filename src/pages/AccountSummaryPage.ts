@@ -1,10 +1,17 @@
+import { Page, Locator } from '@playwright/test';
 import { BasePage } from './BasePage';
 
 export class AccountSummaryPage extends BasePage {
-  readonly balanceCard = this.page.getByText(/balance|available balance/i);
-  readonly transactionsList = this.page.locator('[data-testid="transactions"], table');
+  readonly totalBalance: Locator;
+  readonly transactionRows: Locator;
 
-  async viewBalance() {
-    await this.balanceCard.waitFor({ state: 'visible' });
+  constructor(page: Page) {
+    super(page);
+    this.totalBalance = page.locator('#account-balance, .balance-amount');
+    this.transactionRows = page.locator('table.transactions tbody tr');
+  }
+
+  async getBalance(): Promise<string> {
+    return (await this.totalBalance.textContent()) || '';
   }
 }

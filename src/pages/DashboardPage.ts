@@ -1,20 +1,35 @@
+import { Page, Locator } from '@playwright/test';
 import { BasePage } from './BasePage';
 
 export class DashboardPage extends BasePage {
-  readonly welcomeMessage = this.page.getByText(/welcome|dashboard/i);
-  readonly accountSummaryLink = this.page.getByRole('link', { name: /account summary/i });
-  readonly addPayeeLink = this.page.getByRole('link', { name: /add payee/i });
-  readonly transferFundsLink = this.page.getByRole('link', { name: /fund transfer|transfer funds/i });
+  readonly welcomeHeader: Locator;
+  readonly navAccountSummary: Locator;
+  readonly navFundTransfer: Locator;
+  readonly navAddPayee: Locator;
+  readonly logoutButton: Locator;
 
-  async openAccountSummary() {
-    await this.accountSummaryLink.click();
+  constructor(page: Page) {
+    super(page);
+    this.welcomeHeader = page.locator('#welcome-user, .user-greeting, h1');
+    this.navAccountSummary = page.locator('#nav-summary');
+    this.navFundTransfer = page.locator('#nav-transfer');
+    this.navAddPayee = page.locator('#nav-payee');
+    this.logoutButton = page.locator('#logout, button[name="logout"]');
   }
 
-  async openAddPayee() {
-    await this.addPayeeLink.click();
+  async open(): Promise<void> {
+    await this.navigateTo('/dashboard');
   }
 
-  async openFundTransfer() {
-    await this.transferFundsLink.click();
+  async goToAccountSummary(): Promise<void> {
+    await this.navAccountSummary.click();
+  }
+
+  async goToFundTransfer(): Promise<void> {
+    await this.navFundTransfer.click();
+  }
+
+  async goToAddPayee(): Promise<void> {
+    await this.navAddPayee.click();
   }
 }

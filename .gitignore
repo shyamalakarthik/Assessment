@@ -1,7 +1,11 @@
 node_modules/
 dist/
-playwright-report/
-test-results/
-.env.local
+.auth/
 .auth/*.json
+test-results/
+playwright-report/
+allure-results/
+allure-report/
 .DS_Store
+**/.DS_Store
+.env
